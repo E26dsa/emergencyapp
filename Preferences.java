@@ -18,6 +18,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -27,46 +29,44 @@ public class Preferences extends PreferenceActivity {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.layout);
         EditTextPreference phone1 = (EditTextPreference) findPreference("1");
-        phone1.setOnPreferenceChangeListener(            new Preference.OnPreferenceChangeListener() {
+        phone1.setOnPreferenceChangeListener(
+          new Preference.OnPreferenceChangeListener() {
 
             @Override
             public boolean onPreferenceChange(Preference preference,
                                               Object newValue) {
-                Log.i("onPreferenceChange", "NumberPicker Changed");
-                Toast.makeText(getBaseContext(), "CHANGEEEED !!!",
-                        Toast.LENGTH_SHORT).show();
-                SharedPreferences.Editor editor = getSharedPreferences("phone_numbers", MODE_PRIVATE).edit();
                 EditTextPreference phone1 = (EditTextPreference)findPreference("1");
-                String number_1=phone1.getText();
-                editor.putString("1", number_1); // Storing strin
-                editor.commit();
+                String p1=phone1.getText();
+                Pattern testPattern= Pattern.compile("^[1-9][0-9]{9,11}$");
+                Matcher teststring= testPattern.matcher(p1);
+                if(!teststring.matches())
+                {
+                    AlertDialog alertDialog = new AlertDialog.Builder(Preferences.this).create();
+                    alertDialog.setTitle("Invalid phone number");
+                    alertDialog.setMessage("Please ensure that the country code (no leading zeroes) is included and try again");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+                else{phone1.setSummary("+"+p1);Toast.makeText(Preferences.this, "Contact 1's phone number saved", Toast.LENGTH_LONG).show();}
+                SharedPreferences.Editor editor = getSharedPreferences("phone_numbers", MODE_PRIVATE).edit();
+                editor.putString("1", "+"+p1); // Storing strin
+                editor.apply();
                 return true;
             }
         });
+        SharedPreferences sp = getSharedPreferences("phone_numbers", MODE_PRIVATE);
+        String p1=sp.getString("1","Please enter a phone number");
+        Pattern testPattern= Pattern.compile("^[1-9][0-9]{9,11}$");
+        Matcher teststring= testPattern.matcher(p1);
+        if(!teststring.matches())
+        {
+            p1="Please enter a phone number";
+        }
+        phone1.setSummary("+"+p1);
 
-        EditTextPreference phone2 = (EditTextPreference) findPreference("2");
-        SharedPreferences editor = getSharedPreferences("phone_numbers", MODE_PRIVATE);
-        phone2.setText(editor.getString("1",null));
-        phone2.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
-                EditTextPreference phone2 = (EditTextPreference) findPreference("2");
-                SharedPreferences editor = getSharedPreferences("phone_numbers", MODE_PRIVATE);
-                phone2.setText(editor.getString("1",null));
-                return true;
-            }
-        });
-        phone2.setOnPreferenceChangeListener(            new Preference.OnPreferenceChangeListener() {
-
-            @Override
-            public boolean onPreferenceChange(Preference preference,
-                                              Object newValue) {
-                Log.i("onPreferenceChange", "NumberPicker Changed");
-                Toast.makeText(getBaseContext(), "CHANGEEEED !!!",
-                        Toast.LENGTH_SHORT).show();
-                SharedPreferences editor = getSharedPreferences("phone_numbers", MODE_PRIVATE);
-                EditTextPreference phone2 = (EditTextPreference) findPreference("2");
-                phone2.setText(editor.getString("1",null));
-                return true;
-            }
-        });
     }}
