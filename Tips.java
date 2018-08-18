@@ -134,18 +134,13 @@ public class Tips extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
             Intent myIntent = new Intent(this, Sound_settings.class);
             Tips.this.startActivity(myIntent);
-
         } else if (id == R.id.nav_email) {
-            Intent myIntent = new Intent(this, Compose.class);
-            Tips.this.startActivity(myIntent);
+
         } else if (id == R.id.nav_instructions) {
-            Intent myIntent = new Intent(this, Instructions.class);
+            Intent myIntent = new Intent(this, Instruction.class);
             Tips.this.startActivity(myIntent);
         } else if (id == R.id.nav_tips) {
-
-        }
-
-
+                    }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
