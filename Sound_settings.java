@@ -115,7 +115,6 @@ public class Sound_settings extends AppCompatActivity implements NavigationView.
             Sound_settings.this.startActivity(myIntent);
         } else if (id == R.id.nav_settings) {
 
-
         } else if (id == R.id.nav_email) {
 
         } else if (id == R.id.nav_instructions) {

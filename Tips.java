@@ -26,7 +26,7 @@ import android.widget.Toast;
 public class Tips extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +39,16 @@ public class Tips extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Email app author for help", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("plain/text");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"emergencyapphelp@gmail.com"});
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Help");
+                intent.putExtra(Intent.EXTRA_TEXT, "Please feel free to email me with your questions, concerns or anything else. I'll do my best to help you as soon as I see your email. I can also help report your emergency to authorities for those based in the U.S. For those outside of the U.S, I can publish your event to the Internet if you request.");
+                startActivity(Intent.createChooser(intent, ""));
             }
         });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -52,7 +57,7 @@ public class Tips extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        requestpermisson();
+
 
         SharedPreferences editor = getSharedPreferences("phone_numbers", MODE_PRIVATE);
         EditText textbox1 = (EditText) findViewById(R.id.edit1);
@@ -63,40 +68,6 @@ public class Tips extends AppCompatActivity
 
     }
 
-    public void requestpermisson(){
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.SEND_SMS)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.SEND_SMS)) {
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.SEND_SMS},
-                        MY_PERMISSIONS_REQUEST_SEND_SMS);
-                SmsManager smsManager = SmsManager.getDefault();
-                smsManager.sendTextMessage("+16173011913", null, "sms message", null, null);
-                smsManager.sendTextMessage("+16173011913", null, "2", null, null);
-                smsManager.sendTextMessage("+16173011913", null, "3", null, null);
-                smsManager.sendTextMessage("+16173011913", null, "sms message", null, null);
-                smsManager.sendTextMessage("+16173011913", null, "sms message", null, null);
-                smsManager.sendTextMessage("+16173011913", null, "sms message", null, null);
-                smsManager.sendTextMessage("+16173011913", null, "sms message", null, null);
-                smsManager.sendTextMessage("+16173011913", null, "sms message", null, null);
-                smsManager.sendTextMessage("+16173011913", null, "sms message", null, null);
-                smsManager.sendTextMessage("+16173011913", null, "sms message", null, null);
-                smsManager.sendTextMessage("+16173011913", null, "sms message", null, null);
-                smsManager.sendTextMessage("+16173011913", null, "10", null, null);
-                Toast.makeText(getApplicationContext(), "SMS sent.",
-                        Toast.LENGTH_LONG).show();
-            }
-        }else{         //already has permission granted
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage("+16173011913", null, "sms message", null, null);
-            Toast.makeText(getApplicationContext(), "SMS sent.",
-                    Toast.LENGTH_LONG).show();
-
-        }
-    }
 
     @Override
     public void onBackPressed() {
